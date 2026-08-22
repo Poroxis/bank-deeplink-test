@@ -12,8 +12,23 @@ test("exports the bank deeplink test page as static HTML", async () => {
   assert.match(html, /Откройте приложение банка/);
   assert.match(html, /Открыть Сбер/);
   assert.match(html, /Открыть ВТБ/);
-  assert.match(html, /bank100000000111:\/\/qr\.nspk\.ru/);
-  assert.match(html, /https:\/\/online\.vtb\.ru\/i\/paymentSbp\//);
+  assert.match(html, /Устройство:/);
+});
+
+test("uses platform-specific current bank links", async () => {
+  const actions = await readFile(
+    new URL("../app/bank-actions.tsx", import.meta.url),
+    "utf8",
+  );
+
+  assert.match(actions, /iPhone\|iPad\|iPod/);
+  assert.match(actions, /Android/);
+  assert.match(actions, /sbolonline:\/\//);
+  assert.match(actions, /sberbankonline:\/\//);
+  assert.match(actions, /bank100000000111:\/\//);
+  assert.match(actions, /bank110000000005:\/\//);
+  assert.match(actions, /https:\/\/online\.vneshtbank\.ru\/i\/paymentSbp\//);
+  assert.doesNotMatch(actions, /https:\/\/online\.vtb\.ru\/i\/paymentSbp\//);
 });
 
 test("keeps the finished page free from preview scaffolding", async () => {

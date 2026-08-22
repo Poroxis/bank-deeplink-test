@@ -111,7 +111,23 @@ body {
   gap: 12px;
 }
 
+.device-status {
+  width: fit-content;
+  margin: -10px 0 14px;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.device-status strong {
+  color: var(--text);
+}
+
 .bank-button {
+  width: 100%;
   display: grid;
   grid-template-columns: 46px 1fr auto;
   gap: 14px;
@@ -121,7 +137,10 @@ body {
   border: 1px solid var(--border);
   border-radius: 18px;
   color: var(--text);
+  font: inherit;
+  text-align: left;
   text-decoration: none;
+  cursor: pointer;
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.16);
   transition: transform 150ms ease, filter 150ms ease;
   -webkit-tap-highlight-color: transparent;
@@ -177,6 +196,32 @@ body {
 .arrow {
   font-size: 24px;
   line-height: 1;
+}
+
+.open-status {
+  margin: 14px 2px 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.fallback-button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.fallback-button:focus-visible {
+  outline: 3px solid white;
+  outline-offset: 3px;
 }
 
 .result-guide {
