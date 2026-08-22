@@ -2,14 +2,15 @@
 
 :root {
   color-scheme: dark;
-  --background: #07100d;
-  --surface: rgba(18, 29, 25, 0.88);
-  --surface-strong: #16231e;
-  --border: rgba(255, 255, 255, 0.1);
-  --text: #f5f7f6;
-  --muted: #aebbb6;
-  --sber: #21a366;
-  --vtb: #0a72d8;
+  --background: #101211;
+  --surface: #181b1a;
+  --button: #2a2d2c;
+  --button-hover: #343837;
+  --border: #383c3a;
+  --text: #f5f6f5;
+  --muted: #a9b0ad;
+  --sber: #4ac982;
+  --vtb: #5fa9f4;
 }
 
 * {
@@ -24,268 +25,106 @@ html {
 body {
   min-height: 100vh;
   margin: 0;
-  background:
-    radial-gradient(circle at 15% 12%, rgba(31, 169, 102, 0.18), transparent 28rem),
-    radial-gradient(circle at 90% 88%, rgba(10, 114, 216, 0.16), transparent 27rem),
-    var(--background);
+  background: var(--background);
   color: var(--text);
   font-family: var(--font-geist), Arial, sans-serif;
 }
 
 .page-shell {
   min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 32px 18px;
+  padding: 36px 18px 64px;
 }
 
 .test-card {
-  width: min(100%, 560px);
-  padding: 36px;
-  border: 1px solid var(--border);
-  border-radius: 30px;
-  background: var(--surface);
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.36);
-  backdrop-filter: blur(24px);
+  width: min(100%, 900px);
+  margin: 0 auto;
 }
 
-.eyebrow {
-  width: fit-content;
-  margin-bottom: 24px;
-  padding: 8px 12px;
-  border: 1px solid rgba(67, 207, 136, 0.26);
-  border-radius: 999px;
-  background: rgba(33, 163, 102, 0.1);
-  color: #6be2a7;
-  font-size: 13px;
+h1 {
+  margin: 0 0 34px;
+  font-size: clamp(30px, 6vw, 46px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.link-groups {
+  display: grid;
+  gap: 34px;
+}
+
+.link-group h2 {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
-.intro h1 {
-  margin: 0;
-  font-size: clamp(32px, 8vw, 48px);
-  line-height: 1.02;
-  letter-spacing: -0.045em;
+.link-group.sber h2 {
+  color: var(--sber);
 }
 
-.intro p {
-  margin: 16px 0 0;
-  color: var(--muted);
-  font-size: 17px;
-  line-height: 1.55;
-}
-
-.notice {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  margin: 28px 0;
-  padding: 16px;
-  border: 1px solid rgba(255, 193, 92, 0.2);
-  border-radius: 16px;
-  background: rgba(255, 174, 44, 0.07);
-  color: #e8d4ae;
-}
-
-.notice-mark {
-  display: grid;
-  flex: 0 0 24px;
-  height: 24px;
-  place-items: center;
-  border-radius: 50%;
-  background: #f5ae3d;
-  color: #241704;
-  font-weight: 800;
-}
-
-.notice p {
-  margin: 1px 0 0;
-  font-size: 14px;
-  line-height: 1.5;
+.link-group.vtb h2 {
+  color: var(--vtb);
 }
 
 .bank-actions {
   display: grid;
-  gap: 12px;
+  gap: 9px;
 }
 
-.device-status {
-  width: fit-content;
-  margin: -10px 0 14px;
-  padding: 7px 10px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--muted);
-  font-size: 12px;
-}
-
-.device-status strong {
-  color: var(--text);
-}
-
-.bank-button {
+.deeplink-button {
+  display: block;
   width: 100%;
-  display: grid;
-  grid-template-columns: 46px 1fr auto;
-  gap: 14px;
-  align-items: center;
-  min-height: 76px;
-  padding: 13px 18px 13px 14px;
+  padding: 16px 18px;
   border: 1px solid var(--border);
-  border-radius: 18px;
+  border-radius: 9px;
+  background: var(--button);
   color: var(--text);
-  font: inherit;
-  text-align: left;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
   text-decoration: none;
-  cursor: pointer;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.16);
-  transition: transform 150ms ease, filter 150ms ease;
+  transition: background 120ms ease, transform 120ms ease;
   -webkit-tap-highlight-color: transparent;
 }
 
-.bank-button:active {
-  transform: scale(0.985);
+.deeplink-button:hover {
+  background: var(--button-hover);
 }
 
-.bank-button:hover {
-  filter: brightness(1.08);
+.deeplink-button:active {
+  transform: scale(0.992);
 }
 
-.bank-button:focus-visible {
-  outline: 3px solid white;
-  outline-offset: 3px;
-}
-
-.bank-button.sber {
-  background: linear-gradient(135deg, #168a50, var(--sber));
-}
-
-.bank-button.vtb {
-  background: linear-gradient(135deg, #0756a1, var(--vtb));
-}
-
-.bank-symbol {
-  display: grid;
-  height: 46px;
-  place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.12);
-  font-size: 20px;
-  font-weight: 800;
-}
-
-.bank-button strong,
-.bank-button small {
-  display: block;
-}
-
-.bank-button strong {
-  font-size: 17px;
-}
-
-.bank-button small {
-  margin-top: 4px;
-  color: rgba(255, 255, 255, 0.72);
-  font-size: 13px;
-}
-
-.arrow {
-  font-size: 24px;
-  line-height: 1;
-}
-
-.open-status {
-  margin: 14px 2px 0;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.45;
-}
-
-.fallback-button {
-  width: 100%;
-  margin-top: 10px;
-  padding: 12px 14px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.07);
-  color: var(--text);
-  font: inherit;
-  font-size: 13px;
-  font-weight: 650;
-  cursor: pointer;
-}
-
-.fallback-button:focus-visible {
-  outline: 3px solid white;
-  outline-offset: 3px;
-}
-
-.result-guide {
-  display: grid;
-  gap: 13px;
-  margin: 28px 0 0;
-  padding: 0;
-  color: var(--muted);
-  list-style: none;
-}
-
-.result-guide li {
-  display: grid;
-  grid-template-columns: 28px 1fr;
-  gap: 11px;
-  align-items: start;
-  font-size: 14px;
-  line-height: 1.45;
-}
-
-.result-guide span {
-  display: grid;
-  height: 28px;
-  place-items: center;
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  background: var(--surface-strong);
-  color: var(--text);
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.privacy {
-  margin: 28px 0 0;
-  padding-top: 20px;
-  border-top: 1px solid var(--border);
-  color: #7f9189;
-  font-size: 12px;
-  text-align: center;
+.deeplink-button:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
 }
 
 @media (max-width: 520px) {
   .page-shell {
-    align-items: start;
+    padding: 24px 12px 48px;
+  }
+
+  h1 {
+    margin-bottom: 28px;
+  }
+
+  .link-groups {
+    gap: 30px;
+  }
+
+  .deeplink-button {
     padding: 14px;
-  }
-
-  .test-card {
-    padding: 26px 20px;
-    border-radius: 24px;
-  }
-
-  .eyebrow {
-    margin-bottom: 20px;
-    font-size: 11px;
-  }
-
-  .intro p {
-    font-size: 15px;
+    font-size: 12px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bank-button {
+  .deeplink-button {
     transition: none;
   }
 }

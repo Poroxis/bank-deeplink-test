@@ -9,7 +9,7 @@ const geist = Geist({
 
 export const metadata: Metadata = {
   title: "Тест диплинков Сбера и ВТБ",
-  description: "Страница для проверки открытия банковских приложений по диплинкам.",
+  description: "Тестовые варианты диплинков Сбера и ВТБ.",
 };
 
 export default function RootLayout({

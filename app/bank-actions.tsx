@@ -1,117 +1,85 @@
-"use client";
-
-import { useState, useSyncExternalStore } from "react";
-
-type Platform = "ios" | "android" | "desktop" | "unknown";
-type Bank = "sber" | "vtb";
-
-const qrPath =
-  "qr.nspk.ru/7030303567957146?type=01&bank=100000000005";
-
-const links: Record<Bank, Record<Exclude<Platform, "unknown">, string>> = {
-  sber: {
-    ios: `sbolonline://${qrPath}`,
-    android: `bank100000000111://${qrPath}`,
-    desktop: "",
-  },
-  vtb: {
-    ios: `https://online.vneshtbank.ru/i/paymentSbp/7030303567957146?type=01&bank=100000000005`,
-    android: `bank110000000005://${qrPath}`,
-    desktop: "",
-  },
+type LinkGroup = {
+  title: string;
+  bank: "sber" | "vtb";
+  links: string[];
 };
 
-function detectPlatform(): Exclude<Platform, "unknown"> {
-  const userAgent = navigator.userAgent;
-  const isIPadOS = navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
-
-  if (/iPhone|iPad|iPod/i.test(userAgent) || isIPadOS) {
-    return "ios";
-  }
-
-  if (/Android/i.test(userAgent)) {
-    return "android";
-  }
-
-  return "desktop";
-}
-
-const platformLabels: Record<Platform, string> = {
-  ios: "iPhone / iPad",
-  android: "Android",
-  desktop: "компьютер",
-  unknown: "определяем устройство…",
-};
+const groups: LinkGroup[] = [
+  {
+    title: "Сбер · универсальные",
+    bank: "sber",
+    links: [
+      "https://www.sberbank.com/sms/pbpn?requisiteNumber=79990000000",
+      "https://www.sberbank.com/sms/pbpn?requisiteNumber=79990000000&bankCode=100000000005",
+      "https://www.sberbank.com/sms/pbpn?requisiteNumber=79990000000&bankCode=100000000005&amount=1000.00",
+      "perevod://79990000000",
+    ],
+  },
+  {
+    title: "Сбер · Android",
+    bank: "sber",
+    links: [
+      "sberbankonline://payments/p2p?type=phone_number&requisiteNumber=79990000000",
+      "sberbankonline://payments/p2p?source=QR_FROM_SELF_EMPLOYED_EXTERNAL&type=phone_number&requisiteNumber=79990000000&bankCode=100000000005",
+      "sberbankonline://payments/p2p?source=QR_FROM_SELF_EMPLOYED_EXTERNAL&type=phone_number&requisiteNumber=79990000000&bankCode=100000000005&amount=1000.00",
+      "android-app://ru.sberbankmobile/payments/p2p?source=QR_FROM_SELF_EMPLOYED_EXTERNAL&type=phone_number&requisiteNumber=79990000000&bankCode=100000000005",
+    ],
+  },
+  {
+    title: "Сбер · iOS",
+    bank: "sber",
+    links: [
+      "sbolonline://payments/p2p-by-phone-number?phoneNumber=79990000000",
+      "sbolonline://payments/p2p-by-phone-number?source=QR_FROM_SELF_EMPLOYED_EXTERNAL&phoneNumber=79990000000",
+      "sbolonline://payments/p2p-by-phone-number?source=QR_FROM_SELF_EMPLOYED_EXTERNAL&phoneNumber=79990000000&bankCode=100000000005&amount=1000.00",
+      "onlineappmobile://sbolonline/payments/p2p-by-phone-number?source=QR_FROM_SELF_EMPLOYED_EXTERNAL&phoneNumber=79990000000",
+    ],
+  },
+  {
+    title: "ВТБ · Android",
+    bank: "vtb",
+    links: [
+      "intent:+79990000000#Intent;scheme=tel;package=ru.vtb24.mobilebanking.android;end",
+      "intent://www.sberbank.com/sms/pbpn?requisiteNumber=79990000000#Intent;scheme=https;package=ru.vtb24.mobilebanking.android;end",
+      "intent://www.sberbank.com/sms/pbpn?requisiteNumber=79990000000&bankCode=100000000111&amount=1000.00#Intent;scheme=https;package=ru.vtb24.mobilebanking.android;end",
+    ],
+  },
+  {
+    title: "ВТБ · универсальные / iOS",
+    bank: "vtb",
+    links: [
+      "vtb://online.vtb.ru/i/transfers",
+      "vtb://online.vtb.ru/i/transfers?phoneNumber=79990000000",
+      "vtb://online.vtb.ru/i/transfers?phoneNumber=79990000000&amount=1000.00",
+      "vtb://online.vtb.ru/i/transfers?phoneNumber=79990000000&amount=1000.00&bankCode=100000000111",
+      "https://online.vtb.ru/i/transfers?phoneNumber=79990000000&amount=1000.00&bankCode=100000000111",
+    ],
+  },
+];
 
 export function BankActions() {
-  const platform = useSyncExternalStore<Platform>(
-    () => () => undefined,
-    detectPlatform,
-    () => "unknown",
-  );
-  const [message, setMessage] = useState("");
-  const [showSberFallback, setShowSberFallback] = useState(false);
-
-  function openBank(bank: Bank) {
-    const currentPlatform = platform === "unknown" ? detectPlatform() : platform;
-
-    if (currentPlatform === "desktop") {
-      setMessage("Откройте эту страницу на телефоне — мобильное приложение нельзя запустить с компьютера.");
-      return;
-    }
-
-    setMessage(`Пробуем открыть ${bank === "sber" ? "Сбер" : "ВТБ"}…`);
-    setShowSberFallback(false);
-    window.location.assign(links[bank][currentPlatform]);
-
-    if (bank === "sber" && currentPlatform === "ios") {
-      window.setTimeout(() => {
-        if (document.visibilityState === "visible") {
-          setShowSberFallback(true);
-          setMessage("Сбер не открылся? У разных iOS-версий приложения отличаются схемы запуска.");
-        }
-      }, 1400);
-    }
-  }
-
-  function openAlternativeSber() {
-    setMessage("Пробуем вторую iOS-схему Сбера…");
-    window.location.assign(`sberbankonline://${qrPath}`);
-  }
-
   return (
-    <>
-      <p className="device-status" aria-live="polite">
-        Устройство: <strong>{platformLabels[platform]}</strong>
-      </p>
+    <div className="link-groups">
+      {groups.map((group, index) => {
+        const headingId = `${group.bank}-group-${index}`;
 
-      <div className="bank-actions" aria-label="Выберите банк">
-        <button className="bank-button sber" type="button" onClick={() => openBank("sber")}>
-          <span className="bank-symbol" aria-hidden="true">С</span>
-          <span>
-            <strong>Открыть Сбер</strong>
-            <small>СберБанк Онлайн</small>
-          </span>
-          <span className="arrow" aria-hidden="true">→</span>
-        </button>
-
-        <button className="bank-button vtb" type="button" onClick={() => openBank("vtb")}>
-          <span className="bank-symbol" aria-hidden="true">В</span>
-          <span>
-            <strong>Открыть ВТБ</strong>
-            <small>ВТБ Онлайн</small>
-          </span>
-          <span className="arrow" aria-hidden="true">→</span>
-        </button>
-      </div>
-
-      {message && <p className="open-status" role="status">{message}</p>}
-
-      {showSberFallback && (
-        <button className="fallback-button" type="button" onClick={openAlternativeSber}>
-          Попробовать другую версию Сбера
-        </button>
-      )}
-    </>
+        return (
+          <section
+            className={`link-group ${group.bank}`}
+            key={group.title}
+            aria-labelledby={headingId}
+          >
+            <h2 id={headingId}>{group.title}</h2>
+            <div className="bank-actions">
+              {group.links.map((link) => (
+                <a className={`deeplink-button ${group.bank}`} href={link} key={link}>
+                  {link}
+                </a>
+              ))}
+            </div>
+          </section>
+        );
+      })}
+    </div>
   );
 }

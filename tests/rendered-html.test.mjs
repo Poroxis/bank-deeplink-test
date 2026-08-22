@@ -2,33 +2,36 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-test("exports the bank deeplink test page as static HTML", async () => {
+test("exports the deeplink test page as static HTML", async () => {
   const html = await readFile(
     new URL("../dist/client/index.html", import.meta.url),
     "utf8",
   );
 
   assert.match(html, /<title>Тест диплинков Сбера и ВТБ<\/title>/i);
-  assert.match(html, /Откройте приложение банка/);
-  assert.match(html, /Открыть Сбер/);
-  assert.match(html, /Открыть ВТБ/);
-  assert.match(html, /Устройство:/);
+  assert.match(html, /Тест диплинков/);
+  assert.match(html, /Сбер · Android/);
+  assert.match(html, /Сбер · iOS/);
+  assert.match(html, /ВТБ · Android/);
+  assert.doesNotMatch(html, /Откройте эту страницу|QR тестовый|Страница не собирает/);
 });
 
-test("uses platform-specific current bank links", async () => {
+test("renders every variant as a direct link with its deeplink as the label", async () => {
   const actions = await readFile(
     new URL("../app/bank-actions.tsx", import.meta.url),
     "utf8",
   );
 
-  assert.match(actions, /iPhone\|iPad\|iPod/);
-  assert.match(actions, /Android/);
-  assert.match(actions, /sbolonline:\/\//);
-  assert.match(actions, /sberbankonline:\/\//);
-  assert.match(actions, /bank100000000111:\/\//);
-  assert.match(actions, /bank110000000005:\/\//);
-  assert.match(actions, /https:\/\/online\.vneshtbank\.ru\/i\/paymentSbp\//);
-  assert.doesNotMatch(actions, /https:\/\/online\.vtb\.ru\/i\/paymentSbp\//);
+  assert.doesNotMatch(actions, /window\.location|setTimeout|detectPlatform/);
+  assert.match(actions, /href=\{link\}/);
+  assert.match(actions, /\{link\}/);
+  assert.match(actions, /sberbankonline:\/\/payments\/p2p/);
+  assert.match(actions, /sbolonline:\/\/payments\/p2p-by-phone-number/);
+  assert.match(actions, /intent:\+79990000000#Intent/);
+  assert.match(actions, /vtb:\/\/online\.vtb\.ru\/i\/transfers/);
+  assert.match(actions, /phoneNumber=79990000000/);
+  assert.match(actions, /bankCode=100000000005/);
+  assert.match(actions, /amount=1000\.00/);
 });
 
 test("keeps the finished page free from preview scaffolding", async () => {
