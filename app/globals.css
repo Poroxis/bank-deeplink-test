@@ -1,0 +1,246 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+  --background: #07100d;
+  --surface: rgba(18, 29, 25, 0.88);
+  --surface-strong: #16231e;
+  --border: rgba(255, 255, 255, 0.1);
+  --text: #f5f7f6;
+  --muted: #aebbb6;
+  --sber: #21a366;
+  --vtb: #0a72d8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background: var(--background);
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(circle at 15% 12%, rgba(31, 169, 102, 0.18), transparent 28rem),
+    radial-gradient(circle at 90% 88%, rgba(10, 114, 216, 0.16), transparent 27rem),
+    var(--background);
+  color: var(--text);
+  font-family: var(--font-geist), Arial, sans-serif;
+}
+
+.page-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 32px 18px;
+}
+
+.test-card {
+  width: min(100%, 560px);
+  padding: 36px;
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  background: var(--surface);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.36);
+  backdrop-filter: blur(24px);
+}
+
+.eyebrow {
+  width: fit-content;
+  margin-bottom: 24px;
+  padding: 8px 12px;
+  border: 1px solid rgba(67, 207, 136, 0.26);
+  border-radius: 999px;
+  background: rgba(33, 163, 102, 0.1);
+  color: #6be2a7;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.intro h1 {
+  margin: 0;
+  font-size: clamp(32px, 8vw, 48px);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+}
+
+.intro p {
+  margin: 16px 0 0;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+.notice {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin: 28px 0;
+  padding: 16px;
+  border: 1px solid rgba(255, 193, 92, 0.2);
+  border-radius: 16px;
+  background: rgba(255, 174, 44, 0.07);
+  color: #e8d4ae;
+}
+
+.notice-mark {
+  display: grid;
+  flex: 0 0 24px;
+  height: 24px;
+  place-items: center;
+  border-radius: 50%;
+  background: #f5ae3d;
+  color: #241704;
+  font-weight: 800;
+}
+
+.notice p {
+  margin: 1px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.bank-actions {
+  display: grid;
+  gap: 12px;
+}
+
+.bank-button {
+  display: grid;
+  grid-template-columns: 46px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  min-height: 76px;
+  padding: 13px 18px 13px 14px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  color: var(--text);
+  text-decoration: none;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.16);
+  transition: transform 150ms ease, filter 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bank-button:active {
+  transform: scale(0.985);
+}
+
+.bank-button:hover {
+  filter: brightness(1.08);
+}
+
+.bank-button:focus-visible {
+  outline: 3px solid white;
+  outline-offset: 3px;
+}
+
+.bank-button.sber {
+  background: linear-gradient(135deg, #168a50, var(--sber));
+}
+
+.bank-button.vtb {
+  background: linear-gradient(135deg, #0756a1, var(--vtb));
+}
+
+.bank-symbol {
+  display: grid;
+  height: 46px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.bank-button strong,
+.bank-button small {
+  display: block;
+}
+
+.bank-button strong {
+  font-size: 17px;
+}
+
+.bank-button small {
+  margin-top: 4px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 13px;
+}
+
+.arrow {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.result-guide {
+  display: grid;
+  gap: 13px;
+  margin: 28px 0 0;
+  padding: 0;
+  color: var(--muted);
+  list-style: none;
+}
+
+.result-guide li {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 11px;
+  align-items: start;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.result-guide span {
+  display: grid;
+  height: 28px;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface-strong);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.privacy {
+  margin: 28px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  color: #7f9189;
+  font-size: 12px;
+  text-align: center;
+}
+
+@media (max-width: 520px) {
+  .page-shell {
+    align-items: start;
+    padding: 14px;
+  }
+
+  .test-card {
+    padding: 26px 20px;
+    border-radius: 24px;
+  }
+
+  .eyebrow {
+    margin-bottom: 20px;
+    font-size: 11px;
+  }
+
+  .intro p {
+    font-size: 15px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bank-button {
+    transition: none;
+  }
+}
