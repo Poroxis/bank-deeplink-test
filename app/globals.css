@@ -10,7 +10,6 @@
   --text: #f5f6f5;
   --muted: #a9b0ad;
   --sber: #4ac982;
-  --vtb: #5fa9f4;
 }
 
 * {
@@ -61,12 +60,13 @@ h1 {
   text-transform: uppercase;
 }
 
-.link-group.sber h2 {
+.link-group.confirmed h2 {
   color: var(--sber);
 }
 
-.link-group.vtb h2 {
-  color: var(--vtb);
+.link-group.confirmed .deeplink-button {
+  border-color: rgba(74, 201, 130, 0.72);
+  background: #22352a;
 }
 
 .bank-actions {

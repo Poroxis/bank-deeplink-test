@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <main className="page-shell">
       <div className="test-card">
-        <h1>Тест диплинков</h1>
+        <h1>Сбер iOS · тест суммы</h1>
         <BankActions />
       </div>
     </main>
