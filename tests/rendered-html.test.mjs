@@ -13,6 +13,8 @@ test("exports the current bank deeplink test page as static HTML", async () => {
   assert.match(html, /Сбер · прямой редирект OnlyOne · 203 ₽/);
   assert.match(html, /Сбер · новый заказ · 203 ₽ · точный cs/);
   assert.match(html, /Сбер · старый P2P · только телефон/);
+  assert.match(html, /Сбер · телефон \+ сумма · варианты/);
+  assert.match(html, /Сбер · номер карты \+ сумма · найденный формат/);
   assert.match(html, /ВТБ · телефон \+ сумма · 205 ₽/);
   assert.doesNotMatch(html, /www\.sberbank\.com/);
 });
@@ -34,11 +36,17 @@ test("renders the server-generated Sber scenarios and the VTB link", async () =>
   assert.match(actions, /budgetonline-ios:\/\/sbolonline\/payments\/start\?cs=\$\{sberPaymentCode\}/);
   assert.match(actions, /const sberPaymentCode = "1963930218594"/);
   assert.match(actions, /onlineappmobile:\/\/sbolonline\/payments\/p2p-by-phone-number/);
-  assert.doesNotMatch(actions, /onlineappmobile:[^\n]+(?:amount|sum)=/);
+  assert.match(actions, /confirmedSberLink\}&amount=\$\{amount\}/);
+  assert.match(actions, /confirmedSberLink\}&sum=\$\{amount\}/);
+  assert.match(actions, /type=phoneNumber/);
+  assert.match(actions, /type=phone_number/);
+  assert.match(actions, /const cardNumber = "2202201000011111"/);
+  assert.match(actions, /to=\$\{cardNumber\}&type=cardNumber/);
+  assert.match(actions, /isNeedToOpenNextScreen=true&skipContactsScreen=true/);
   assert.match(actions, /loona:\/\/online\.vtb\.ru\/transfers\/transferByPhone/);
   assert.match(actions, /predefinedPhoneNumber%5D=\$\{phoneNumber\}/);
   assert.match(actions, /predefinedAmount%5D=\$\{amount\}/);
-  assert.doesNotMatch(actions, /paymentUuid|requisiteNumber/);
+  assert.doesNotMatch(actions, /paymentUuid/);
 });
 
 test("keeps the finished page free from preview scaffolding", async () => {

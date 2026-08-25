@@ -1,11 +1,12 @@
 type LinkGroup = {
   title: string;
-  kind: "confirmed" | "extracted";
+  kind: "confirmed" | "extracted" | "test";
   links: string[];
 };
 
 const phoneNumber = "79990000000";
 const amount = "205";
+const cardNumber = "2202201000011111";
 const sberPaymentCode = "1963930218594";
 const providerDeeplink =
   "https://payment.onlyonepays.com/api/payform/deeplink/sberbank?uuid=01a03a44-07a7-7c47-a71a-e2679738141c";
@@ -33,6 +34,27 @@ const groups: LinkGroup[] = [
     title: "Сбер · старый P2P · только телефон",
     kind: "confirmed",
     links: [confirmedSberLink],
+  },
+  {
+    title: "Сбер · телефон + сумма · варианты",
+    kind: "test",
+    links: [
+      `${confirmedSberLink}&amount=${amount}`,
+      `${confirmedSberLink}&sum=${amount}`,
+      `onlineappmobile://sbolonline/p2ptransfer?amount=${amount}&isNeedToOpenNextScreen=true&skipContactsScreen=true&to=${phoneNumber}&type=phoneNumber`,
+      `onlineappmobile://sbolonline/p2ptransfer?amount=${amount}&isNeedToOpenNextScreen=true&skipContactsScreen=true&to=${phoneNumber}&type=phone_number`,
+      `onlineappmobile://sbolonline/payments/p2p?type=phone_number&requisiteNumber=${phoneNumber}&amount=${amount}`,
+    ],
+  },
+  {
+    title: "Сбер · номер карты + сумма · найденный формат",
+    kind: "extracted",
+    links: [
+      `onlineappmobile://sbolonline/p2ptransfer?amount=${amount}&isNeedToOpenNextScreen=true&skipContactsScreen=true&to=${cardNumber}&type=cardNumber`,
+      `onlineios-app://sbolonline/p2ptransfer?amount=${amount}&isNeedToOpenNextScreen=true&skipContactsScreen=true&to=${cardNumber}&type=cardNumber`,
+      `budgetonline-ios://sbolonline/p2ptransfer?amount=${amount}&isNeedToOpenNextScreen=true&skipContactsScreen=true&to=${cardNumber}&type=cardNumber`,
+      `sbolonline://payments/p2ptransfer?amount=${amount}&isNeedToOpenNextScreen=true&skipContactsScreen=true&to=${cardNumber}&type=cardNumber`,
+    ],
   },
   {
     title: "ВТБ · телефон + сумма · 205 ₽",
