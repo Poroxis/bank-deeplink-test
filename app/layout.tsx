@@ -8,8 +8,8 @@ const geist = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Тест суммы в диплинке Сбера",
-  description: "Тестовые варианты суммы в iOS-диплинке Сбера.",
+  title: "Тест банковских диплинков",
+  description: "Актуальные тестовые диплинки Сбера и ВТБ.",
 };
 
 export default function RootLayout({

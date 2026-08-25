@@ -1,48 +1,43 @@
 type LinkGroup = {
   title: string;
-  kind: "confirmed" | "test";
+  kind: "confirmed" | "extracted" | "test";
   links: string[];
 };
 
-const baseLink =
+const phoneNumber = "992918652056";
+const amount = "205";
+const paymentUuid = "01a03a13-42fa-7b76-a9a1-40f85e76069c";
+
+const confirmedSberLink =
   "onlineappmobile://sbolonline/payments/p2p-by-phone-number?source=QR_FROM_SELF_EMPLOYED_EXTERNAL&phoneNumber=79990000000";
 
 const groups: LinkGroup[] = [
   {
-    title: "Сработал · телефон без суммы",
+    title: "Сбер · сработал ранее · без суммы",
     kind: "confirmed",
-    links: [baseLink],
+    links: [confirmedSberLink],
   },
   {
-    title: "Поле amount · 201 ₽",
-    kind: "test",
+    title: "Сбер · извлечено из JS · 205 ₽",
+    kind: "extracted",
     links: [
-      `${baseLink}&amount=201`,
-      `${baseLink}&amount=201.00`,
-      `${baseLink}&amount=20100`,
-      `${baseLink}&amount=201&currency=RUB`,
-      `${baseLink}&amount=20100&currency=643`,
-      `${baseLink}&amount=201&currencyCode=643`,
+      `https://www.sberbank.com/sms/pbpn?requisiteNumber=${phoneNumber}&sum=${amount}`,
+      `https://payment.onlyonepays.com/api/payform/deeplink/sberbank?uuid=${paymentUuid}`,
     ],
   },
   {
-    title: "Другие возможные поля суммы · 201 ₽",
+    title: "Сбер · onlineappmobile + sum · 205 ₽",
     kind: "test",
     links: [
-      `${baseLink}&sum=201`,
-      `${baseLink}&transferAmount=201`,
-      `${baseLink}&paymentAmount=201`,
-      `${baseLink}&buyAmount=201`,
+      `onlineappmobile://sbolonline/payments/p2p-by-phone-number?source=QR_FROM_SELF_EMPLOYED_EXTERNAL&phoneNumber=${phoneNumber}&sum=${amount}`,
     ],
   },
   {
-    title: "Сумма + ВТБ · 201 ₽",
-    kind: "test",
+    title: "ВТБ · извлечено из JS · 205 ₽",
+    kind: "extracted",
     links: [
-      `${baseLink}&amount=201&bankCode=100000000005`,
-      `${baseLink}&amount=201.00&bankCode=100000000005`,
-      `${baseLink}&amount=20100&bankCode=100000000005`,
-      `${baseLink}&sum=201&bankCode=100000000005`,
+      `loona://online.vtb.ru/transfers/transferByPhone?isStandaloneScenario=true&actionType=generalTargetSearch&tab=SWITCH_TO_OP_4808&isForeingNumber=false&predefinedValues%5BpredefinedPhoneNumber%5D=${phoneNumber}&predefinedValues%5BpredefinedBank%5D=100000000008&predefinedValues%5BpredefinedAmount%5D=${amount}&stage=INPUT`,
+      `https://payment.onlyonepays.com/api/payform/deeplink/vtb?uuid=${paymentUuid}`,
     ],
   },
 ];
@@ -51,7 +46,7 @@ export function BankActions() {
   return (
     <div className="link-groups">
       {groups.map((group, index) => {
-        const headingId = `sber-group-${index}`;
+        const headingId = `deeplink-group-${index}`;
 
         return (
           <section

@@ -10,6 +10,7 @@
   --text: #f5f6f5;
   --muted: #a9b0ad;
   --sber: #4ac982;
+  --extracted: #64a8ff;
 }
 
 * {
@@ -67,6 +68,15 @@ h1 {
 .link-group.confirmed .deeplink-button {
   border-color: rgba(74, 201, 130, 0.72);
   background: #22352a;
+}
+
+.link-group.extracted h2 {
+  color: var(--extracted);
+}
+
+.link-group.extracted .deeplink-button {
+  border-color: rgba(100, 168, 255, 0.66);
+  background: #202d3d;
 }
 
 .bank-actions {
