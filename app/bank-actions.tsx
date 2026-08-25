@@ -6,13 +6,24 @@ type LinkGroup = {
 
 const phoneNumber = "79990000000";
 const amount = "205";
+const sberPaymentCode = "1963930218594";
 
 const confirmedSberLink =
   `onlineappmobile://sbolonline/payments/p2p-by-phone-number?source=QR_FROM_SELF_EMPLOYED_EXTERNAL&phoneNumber=${phoneNumber}`;
 
 const groups: LinkGroup[] = [
   {
-    title: "Сбер · только телефон · сумма не поддерживается",
+    title: "Сбер · новый заказ · 203 ₽ · точный cs",
+    kind: "extracted",
+    links: [
+      `onlineappmobile://sbolonline/payments/start?cs=${sberPaymentCode}`,
+      `onlineios-app://sbolonline/payments/start?cs=${sberPaymentCode}`,
+      `budgetonline-ios://sbolonline/payments/start?cs=${sberPaymentCode}`,
+      `sbolonline://sbolonline/payments/start?cs=${sberPaymentCode}`,
+    ],
+  },
+  {
+    title: "Сбер · старый P2P · только телефон",
     kind: "confirmed",
     links: [confirmedSberLink],
   },

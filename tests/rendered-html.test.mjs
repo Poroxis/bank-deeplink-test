@@ -10,12 +10,13 @@ test("exports the current bank deeplink test page as static HTML", async () => {
 
   assert.match(html, /<title>Тест банковских диплинков<\/title>/i);
   assert.match(html, /Проверка диплинков/);
-  assert.match(html, /Сбер · только телефон · сумма не поддерживается/);
+  assert.match(html, /Сбер · новый заказ · 203 ₽ · точный cs/);
+  assert.match(html, /Сбер · старый P2P · только телефон/);
   assert.match(html, /ВТБ · телефон \+ сумма · 205 ₽/);
   assert.doesNotMatch(html, /payment\.onlyonepays\.com|www\.sberbank\.com/);
 });
 
-test("renders the working Sber link and the extracted VTB link", async () => {
+test("renders the server-generated Sber scenarios and the VTB link", async () => {
   const actions = await readFile(
     new URL("../app/bank-actions.tsx", import.meta.url),
     "utf8",
@@ -23,6 +24,10 @@ test("renders the working Sber link and the extracted VTB link", async () => {
 
   assert.doesNotMatch(actions, /window\.location|setTimeout|detectPlatform/);
   assert.match(actions, /href=\{link\}/);
+  assert.match(actions, /onlineappmobile:\/\/sbolonline\/payments\/start\?cs=\$\{sberPaymentCode\}/);
+  assert.match(actions, /onlineios-app:\/\/sbolonline\/payments\/start\?cs=\$\{sberPaymentCode\}/);
+  assert.match(actions, /budgetonline-ios:\/\/sbolonline\/payments\/start\?cs=\$\{sberPaymentCode\}/);
+  assert.match(actions, /const sberPaymentCode = "1963930218594"/);
   assert.match(actions, /onlineappmobile:\/\/sbolonline\/payments\/p2p-by-phone-number/);
   assert.doesNotMatch(actions, /onlineappmobile:[^\n]+(?:amount|sum)=/);
   assert.match(actions, /loona:\/\/online\.vtb\.ru\/transfers\/transferByPhone/);
