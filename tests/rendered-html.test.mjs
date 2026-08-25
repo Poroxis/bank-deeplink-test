@@ -9,13 +9,13 @@ test("exports the current bank deeplink test page as static HTML", async () => {
   );
 
   assert.match(html, /<title>Тест банковских диплинков<\/title>/i);
-  assert.match(html, /Актуальные диплинки/);
-  assert.match(html, /Сбер · извлечено из JS · 205 ₽/);
-  assert.match(html, /ВТБ · извлечено из JS · 205 ₽/);
-  assert.doesNotMatch(html, /Поле amount|Другие возможные поля суммы/);
+  assert.match(html, /Проверка диплинков/);
+  assert.match(html, /Сбер · только телефон · сумма не поддерживается/);
+  assert.match(html, /ВТБ · телефон \+ сумма · 205 ₽/);
+  assert.doesNotMatch(html, /payment\.onlyonepays\.com|www\.sberbank\.com/);
 });
 
-test("renders extracted Sber and VTB links as direct anchors", async () => {
+test("renders the working Sber link and the extracted VTB link", async () => {
   const actions = await readFile(
     new URL("../app/bank-actions.tsx", import.meta.url),
     "utf8",
@@ -23,14 +23,12 @@ test("renders extracted Sber and VTB links as direct anchors", async () => {
 
   assert.doesNotMatch(actions, /window\.location|setTimeout|detectPlatform/);
   assert.match(actions, /href=\{link\}/);
-  assert.match(actions, /requisiteNumber=\$\{phoneNumber\}&sum=\$\{amount\}/);
   assert.match(actions, /onlineappmobile:\/\/sbolonline\/payments\/p2p-by-phone-number/);
-  assert.match(actions, /phoneNumber=\$\{phoneNumber\}&sum=\$\{amount\}/);
+  assert.doesNotMatch(actions, /onlineappmobile:[^\n]+(?:amount|sum)=/);
   assert.match(actions, /loona:\/\/online\.vtb\.ru\/transfers\/transferByPhone/);
   assert.match(actions, /predefinedPhoneNumber%5D=\$\{phoneNumber\}/);
   assert.match(actions, /predefinedAmount%5D=\$\{amount\}/);
-  assert.match(actions, /payform\/deeplink\/sberbank\?uuid=\$\{paymentUuid\}/);
-  assert.match(actions, /payform\/deeplink\/vtb\?uuid=\$\{paymentUuid\}/);
+  assert.doesNotMatch(actions, /paymentUuid|onlyonepays|requisiteNumber/);
 });
 
 test("keeps the finished page free from preview scaffolding", async () => {

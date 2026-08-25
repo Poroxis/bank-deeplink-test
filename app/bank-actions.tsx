@@ -1,43 +1,26 @@
 type LinkGroup = {
   title: string;
-  kind: "confirmed" | "extracted" | "test";
+  kind: "confirmed" | "extracted";
   links: string[];
 };
 
-const phoneNumber = "992918652056";
+const phoneNumber = "79990000000";
 const amount = "205";
-const paymentUuid = "01a03a13-42fa-7b76-a9a1-40f85e76069c";
 
 const confirmedSberLink =
-  "onlineappmobile://sbolonline/payments/p2p-by-phone-number?source=QR_FROM_SELF_EMPLOYED_EXTERNAL&phoneNumber=79990000000";
+  `onlineappmobile://sbolonline/payments/p2p-by-phone-number?source=QR_FROM_SELF_EMPLOYED_EXTERNAL&phoneNumber=${phoneNumber}`;
 
 const groups: LinkGroup[] = [
   {
-    title: "Сбер · сработал ранее · без суммы",
+    title: "Сбер · только телефон · сумма не поддерживается",
     kind: "confirmed",
     links: [confirmedSberLink],
   },
   {
-    title: "Сбер · извлечено из JS · 205 ₽",
-    kind: "extracted",
-    links: [
-      `https://www.sberbank.com/sms/pbpn?requisiteNumber=${phoneNumber}&sum=${amount}`,
-      `https://payment.onlyonepays.com/api/payform/deeplink/sberbank?uuid=${paymentUuid}`,
-    ],
-  },
-  {
-    title: "Сбер · onlineappmobile + sum · 205 ₽",
-    kind: "test",
-    links: [
-      `onlineappmobile://sbolonline/payments/p2p-by-phone-number?source=QR_FROM_SELF_EMPLOYED_EXTERNAL&phoneNumber=${phoneNumber}&sum=${amount}`,
-    ],
-  },
-  {
-    title: "ВТБ · извлечено из JS · 205 ₽",
+    title: "ВТБ · телефон + сумма · 205 ₽",
     kind: "extracted",
     links: [
       `loona://online.vtb.ru/transfers/transferByPhone?isStandaloneScenario=true&actionType=generalTargetSearch&tab=SWITCH_TO_OP_4808&isForeingNumber=false&predefinedValues%5BpredefinedPhoneNumber%5D=${phoneNumber}&predefinedValues%5BpredefinedBank%5D=100000000008&predefinedValues%5BpredefinedAmount%5D=${amount}&stage=INPUT`,
-      `https://payment.onlyonepays.com/api/payform/deeplink/vtb?uuid=${paymentUuid}`,
     ],
   },
 ];
