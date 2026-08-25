@@ -8,14 +8,14 @@ const phoneNumber = "79990000000";
 const amount = "205";
 const sberPaymentCode = "1963930218594";
 const providerDeeplink =
-  "https://payment.onlyonepays.com/01a03a44-07a7-7c47-a71a-e2679738141c";
+  "https://payment.onlyonepays.com/api/payform/deeplink/sberbank?uuid=01a03a44-07a7-7c47-a71a-e2679738141c";
 
 const confirmedSberLink =
   `onlineappmobile://sbolonline/payments/p2p-by-phone-number?source=QR_FROM_SELF_EMPLOYED_EXTERNAL&phoneNumber=${phoneNumber}`;
 
 const groups: LinkGroup[] = [
   {
-    title: "Сбер · attributes.deeplink · 203 ₽",
+    title: "Сбер · прямой редирект OnlyOne · 203 ₽",
     kind: "confirmed",
     links: [providerDeeplink],
   },
