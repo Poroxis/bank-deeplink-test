@@ -47,12 +47,26 @@ h1 {
   letter-spacing: -0.04em;
 }
 
+.platform-sections {
+  display: grid;
+  gap: 56px;
+}
+
+.platform-title {
+  margin: 0 0 24px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
 .link-groups {
   display: grid;
   gap: 34px;
 }
 
-.link-group h2 {
+.link-group h3 {
   margin: 0 0 12px;
   color: var(--muted);
   font-size: 14px;
@@ -61,7 +75,7 @@ h1 {
   text-transform: uppercase;
 }
 
-.link-group.confirmed h2 {
+.link-group.confirmed h3 {
   color: var(--sber);
 }
 
@@ -70,7 +84,7 @@ h1 {
   background: #22352a;
 }
 
-.link-group.extracted h2 {
+.link-group.extracted h3 {
   color: var(--extracted);
 }
 
@@ -125,6 +139,10 @@ h1 {
 
   .link-groups {
     gap: 30px;
+  }
+
+  .platform-sections {
+    gap: 46px;
   }
 
   .deeplink-button {

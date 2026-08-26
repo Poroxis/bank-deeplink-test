@@ -4,72 +4,109 @@ type LinkGroup = {
   links: string[];
 };
 
+type PlatformSection = {
+  id: string;
+  title: string;
+  groups: LinkGroup[];
+};
+
 const phoneNumber = "79990000000";
 const amount = "205";
 const cardNumber = "2202201000011111";
-const sberPaymentCode = "1963930218594";
-const providerDeeplink =
-  "https://payment.onlyonepays.com/api/payform/deeplink/sberbank?uuid=01a03a44-07a7-7c47-a71a-e2679738141c";
 
-const confirmedSberLink =
+const sberIosPhoneLink =
   `onlineappmobile://sbolonline/payments/p2p-by-phone-number?source=QR_FROM_SELF_EMPLOYED_EXTERNAL&phoneNumber=${phoneNumber}`;
 
-const groups: LinkGroup[] = [
+const sberAndroidPhonePath =
+  `ru.sberbankmobile/payments/p2p?source=QR_FROM_SELF_EMPLOYED_EXTERNAL&type=phone_number&requisiteNumber=${phoneNumber}`;
+const sberAndroidCardPath =
+  `ru.sberbankmobile/payments/p2p?type=card_number&requisiteNumber=${cardNumber}`;
+
+const vtbAndroidPhonePath = `online.vtb.ru/i/ppl/${phoneNumber}`;
+
+const sections: PlatformSection[] = [
   {
-    title: "Сбер · прямой редирект OnlyOne · 203 ₽",
-    kind: "confirmed",
-    links: [providerDeeplink],
-  },
-  {
-    title: "Сбер · новый заказ · 203 ₽ · точный cs",
-    kind: "extracted",
-    links: [
-      `onlineappmobile://sbolonline/payments/start?cs=${sberPaymentCode}`,
-      `onlineios-app://sbolonline/payments/start?cs=${sberPaymentCode}`,
-      `budgetonline-ios://sbolonline/payments/start?cs=${sberPaymentCode}`,
-      `sbolonline://sbolonline/payments/start?cs=${sberPaymentCode}`,
+    id: "ios",
+    title: "iPhone / iOS",
+    groups: [
+      {
+        title: "Сбер · телефон",
+        kind: "confirmed",
+        links: [sberIosPhoneLink],
+      },
+      {
+        title: "Сбер · телефон + сумма · 205 ₽",
+        kind: "confirmed",
+        links: [
+          `${sberIosPhoneLink}&amount=${amount}`,
+          `onlineappmobile://sbolonline/p2ptransfer?amount=${amount}&isNeedToOpenNextScreen=true&skipContactsScreen=true&to=${phoneNumber}&type=phoneNumber`,
+          `onlineappmobile://sbolonline/p2ptransfer?amount=${amount}&isNeedToOpenNextScreen=true&skipContactsScreen=true&to=${phoneNumber}&type=phone_number`,
+        ],
+      },
+      {
+        title: "Сбер · номер карты + сумма · 205 ₽",
+        kind: "confirmed",
+        links: [
+          `onlineappmobile://sbolonline/p2ptransfer?amount=${amount}&isNeedToOpenNextScreen=true&skipContactsScreen=true&to=${cardNumber}&type=cardNumber`,
+        ],
+      },
+      {
+        title: "ВТБ · телефон + сумма · 205 ₽",
+        kind: "confirmed",
+        links: [
+          `loona://online.vtb.ru/transfers/transferByPhone?isStandaloneScenario=true&actionType=generalTargetSearch&tab=SWITCH_TO_OP_4808&isForeingNumber=false&predefinedValues%5BpredefinedPhoneNumber%5D=${phoneNumber}&predefinedValues%5BpredefinedBank%5D=100000000008&predefinedValues%5BpredefinedAmount%5D=${amount}&stage=INPUT`,
+        ],
+      },
     ],
   },
   {
-    title: "Сбер · старый P2P · только телефон",
-    kind: "confirmed",
-    links: [confirmedSberLink],
-  },
-  {
-    title: "Сбер · телефон + сумма · варианты",
-    kind: "test",
-    links: [
-      `${confirmedSberLink}&amount=${amount}`,
-      `${confirmedSberLink}&sum=${amount}`,
-      `onlineappmobile://sbolonline/p2ptransfer?amount=${amount}&isNeedToOpenNextScreen=true&skipContactsScreen=true&to=${phoneNumber}&type=phoneNumber`,
-      `onlineappmobile://sbolonline/p2ptransfer?amount=${amount}&isNeedToOpenNextScreen=true&skipContactsScreen=true&to=${phoneNumber}&type=phone_number`,
-      `onlineappmobile://sbolonline/payments/p2p?type=phone_number&requisiteNumber=${phoneNumber}&amount=${amount}`,
-    ],
-  },
-  {
-    title: "Сбер · номер карты + сумма · найденный формат",
-    kind: "extracted",
-    links: [
-      `onlineappmobile://sbolonline/p2ptransfer?amount=${amount}&isNeedToOpenNextScreen=true&skipContactsScreen=true&to=${cardNumber}&type=cardNumber`,
-      `onlineios-app://sbolonline/p2ptransfer?amount=${amount}&isNeedToOpenNextScreen=true&skipContactsScreen=true&to=${cardNumber}&type=cardNumber`,
-      `budgetonline-ios://sbolonline/p2ptransfer?amount=${amount}&isNeedToOpenNextScreen=true&skipContactsScreen=true&to=${cardNumber}&type=cardNumber`,
-      `sbolonline://payments/p2ptransfer?amount=${amount}&isNeedToOpenNextScreen=true&skipContactsScreen=true&to=${cardNumber}&type=cardNumber`,
-    ],
-  },
-  {
-    title: "ВТБ · телефон + сумма · 205 ₽",
-    kind: "extracted",
-    links: [
-      `loona://online.vtb.ru/transfers/transferByPhone?isStandaloneScenario=true&actionType=generalTargetSearch&tab=SWITCH_TO_OP_4808&isForeingNumber=false&predefinedValues%5BpredefinedPhoneNumber%5D=${phoneNumber}&predefinedValues%5BpredefinedBank%5D=100000000008&predefinedValues%5BpredefinedAmount%5D=${amount}&stage=INPUT`,
+    id: "android",
+    title: "Android",
+    groups: [
+      {
+        title: "Сбер · телефон",
+        kind: "extracted",
+        links: [
+          `intent://${sberAndroidPhonePath}#Intent;scheme=android-app;package=ru.sberbankmobile;end`,
+          `android-app://${sberAndroidPhonePath}`,
+          `sberbankonline://payments/p2p?source=QR_FROM_SELF_EMPLOYED_EXTERNAL&type=phone_number&requisiteNumber=${phoneNumber}`,
+        ],
+      },
+      {
+        title: "Сбер · номер карты",
+        kind: "extracted",
+        links: [
+          `intent://${sberAndroidCardPath}#Intent;scheme=android-app;package=ru.sberbankmobile;end`,
+          `android-app://${sberAndroidCardPath}`,
+          `sberbankonline://payments/p2p?type=card_number&requisiteNumber=${cardNumber}`,
+        ],
+      },
+      {
+        title: "ВТБ · телефон",
+        kind: "extracted",
+        links: [
+          `https://${vtbAndroidPhonePath}`,
+          `intent://${vtbAndroidPhonePath}#Intent;scheme=https;package=ru.vtb24.mobilebanking.android;end`,
+          `vtb://${vtbAndroidPhonePath}`,
+        ],
+      },
+      {
+        title: "ВТБ · форма перевода по карте",
+        kind: "test",
+        links: [
+          "https://online.vtb.ru/i/c2c",
+          "vtb://online.vtb.ru/i/c2c",
+        ],
+      },
     ],
   },
 ];
 
-export function BankActions() {
+function LinkGroups({ groups, platformId }: { groups: LinkGroup[]; platformId: string }) {
   return (
     <div className="link-groups">
       {groups.map((group, index) => {
-        const headingId = `deeplink-group-${index}`;
+        const headingId = `${platformId}-deeplink-group-${index}`;
 
         return (
           <section
@@ -77,7 +114,7 @@ export function BankActions() {
             key={group.title}
             aria-labelledby={headingId}
           >
-            <h2 id={headingId}>{group.title}</h2>
+            <h3 id={headingId}>{group.title}</h3>
             <div className="bank-actions">
               {group.links.map((link) => (
                 <a className="deeplink-button" href={link} key={link}>
@@ -85,6 +122,29 @@ export function BankActions() {
                 </a>
               ))}
             </div>
+          </section>
+        );
+      })}
+    </div>
+  );
+}
+
+export function BankActions() {
+  return (
+    <div className="platform-sections">
+      {sections.map((section) => {
+        const headingId = `${section.id}-heading`;
+
+        return (
+          <section
+            className={`platform-section ${section.id}`}
+            key={section.id}
+            aria-labelledby={headingId}
+          >
+            <h2 className="platform-title" id={headingId}>
+              {section.title}
+            </h2>
+            <LinkGroups groups={section.groups} platformId={section.id} />
           </section>
         );
       })}
