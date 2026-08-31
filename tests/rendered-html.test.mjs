@@ -13,16 +13,20 @@ test("exports the current bank deeplink test page as static HTML", async () => {
   assert.match(html, /iPhone \/ iOS/);
   assert.match(html, /Android/);
   assert.match(html, /Сбер · телефон \+ сумма · 205 ₽/);
-  assert.match(html, /Сбер · номер карты \+ сумма · 205 ₽/);
+  assert.doesNotMatch(html, /Сбер · номер карты \+ сумма · 205 ₽/);
   assert.match(html, /ВТБ · телефон \+ сумма · 205 ₽/);
   assert.match(html, /ВТБ · форма перевода по карте/);
   assert.doesNotMatch(html, /OnlyOne|payments\/start|\bcs=/i);
 });
 
-test("renders only the working iOS links from device tests", async () => {
+test("renders only the requested iOS Sber phone and amount links", async () => {
   const actions = await readFile(
     new URL("../app/bank-actions.tsx", import.meta.url),
     "utf8",
+  );
+  const iosSection = actions.slice(
+    actions.indexOf('id: "ios"'),
+    actions.indexOf('id: "android"'),
   );
 
   assert.doesNotMatch(actions, /window\.location|setTimeout|detectPlatform/);
@@ -31,8 +35,8 @@ test("renders only the working iOS links from device tests", async () => {
   assert.match(actions, /sberIosPhoneLink\}&amount=\$\{amount\}/);
   assert.match(actions, /type=phoneNumber/);
   assert.match(actions, /type=phone_number/);
-  assert.match(actions, /const cardNumber = "2202201000011111"/);
-  assert.match(actions, /to=\$\{cardNumber\}&type=cardNumber/);
+  assert.doesNotMatch(iosSection, /title: "Сбер · телефон",/);
+  assert.doesNotMatch(iosSection, /title: "Сбер · номер карты \+ сумма/);
   assert.match(actions, /isNeedToOpenNextScreen=true&skipContactsScreen=true/);
   assert.match(actions, /loona:\/\/online\.vtb\.ru\/transfers\/transferByPhone/);
   assert.match(actions, /predefinedPhoneNumber%5D=\$\{phoneNumber\}/);

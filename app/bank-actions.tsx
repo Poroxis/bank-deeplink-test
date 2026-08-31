@@ -30,24 +30,12 @@ const sections: PlatformSection[] = [
     title: "iPhone / iOS",
     groups: [
       {
-        title: "Сбер · телефон",
-        kind: "confirmed",
-        links: [sberIosPhoneLink],
-      },
-      {
         title: "Сбер · телефон + сумма · 205 ₽",
         kind: "confirmed",
         links: [
           `${sberIosPhoneLink}&amount=${amount}`,
           `onlineappmobile://sbolonline/p2ptransfer?amount=${amount}&isNeedToOpenNextScreen=true&skipContactsScreen=true&to=${phoneNumber}&type=phoneNumber`,
           `onlineappmobile://sbolonline/p2ptransfer?amount=${amount}&isNeedToOpenNextScreen=true&skipContactsScreen=true&to=${phoneNumber}&type=phone_number`,
-        ],
-      },
-      {
-        title: "Сбер · номер карты + сумма · 205 ₽",
-        kind: "confirmed",
-        links: [
-          `onlineappmobile://sbolonline/p2ptransfer?amount=${amount}&isNeedToOpenNextScreen=true&skipContactsScreen=true&to=${cardNumber}&type=cardNumber`,
         ],
       },
       {
